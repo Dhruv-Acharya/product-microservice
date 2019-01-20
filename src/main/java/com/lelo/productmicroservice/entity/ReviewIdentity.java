@@ -14,6 +14,17 @@ public class ReviewIdentity {
     @NotNull
     private String merchantId;
 
+    ReviewIdentity(){
+
+    }
+
+    ReviewIdentity(String customerId,String productId,String merchantId)
+    {
+        this.customerId=customerId;
+        this.merchantId=merchantId;
+        this.productId=productId;
+    }
+
     public String getCustomerId() {
         return customerId;
     }

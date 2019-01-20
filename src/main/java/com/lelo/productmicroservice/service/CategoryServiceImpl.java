@@ -1,7 +1,7 @@
 package com.lelo.productmicroservice.service;
 
-import com.lelo.productmicroservice.entity.Categories;
-import com.lelo.productmicroservice.repository.CategoriesRepository;
+import com.lelo.productmicroservice.entity.Category;
+import com.lelo.productmicroservice.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -14,25 +14,25 @@ import java.util.Iterator;
 
 @Service
 @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-public class CategoriesServiceImpl implements CategoriesService {
+public class CategoryServiceImpl implements CategoryService {
 
 
     @Autowired
-    CategoriesRepository categoriesRepository;
+    CategoryRepository categoryRepository;
     @Override
     @Transactional(readOnly = false)
-    public Categories add(Categories categories) {
-        return categoriesRepository.save(categories);
+    public Category add(Category categories) {
+        return categoryRepository.save(categories);
     }
 
     @Override
-    public List<Categories> getAllCategories() {
-        List<Categories> categoryList = new ArrayList<>();
+    public List<Category> getAllCategories() {
+        List<Category> categoryList = new ArrayList<>();
 
-        Iterable<Categories> employeeIterable = categoriesRepository.findAll();
+        Iterable<Category> employeeIterable = categoryRepository.findAll();
         Iterator categoryIterator = employeeIterable.iterator();
         while (categoryIterator.hasNext()) {
-            categoryList.add((Categories) categoryIterator.next());
+            categoryList.add((Category) categoryIterator.next());
         }
         return categoryList;
     }

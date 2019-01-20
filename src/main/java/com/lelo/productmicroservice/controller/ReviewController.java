@@ -22,9 +22,9 @@ public class ReviewController {
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public void addReview(@RequestBody ReviewDTO reviewDTO){
-        Review review=new Review();
-        BeanUtils.copyProperties(reviewDTO,review);
-        reviewService.addReview(review);
+//        Review review=new Review(reviewDTO.getCustomerId(),r);
+//        BeanUtils.copyProperties(reviewDTO,review);
+//        reviewService.addReview(review);
     }
 
     //@RequestMapping(value = "/getReview",method = RequestMethod.GET)

@@ -1,6 +1,6 @@
 package com.lelo.productmicroservice.dto;
 
-public class CategoriesDTO {
+public class CategoryDTO {
     private String categoriesId;
     private String name;
 
