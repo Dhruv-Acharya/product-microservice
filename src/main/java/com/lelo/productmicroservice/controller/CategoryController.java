@@ -1,9 +1,9 @@
 package com.lelo.productmicroservice.controller;
 
 
-import com.lelo.productmicroservice.dto.CategoriesDTO;
-import com.lelo.productmicroservice.entity.Categories;
-import com.lelo.productmicroservice.service.CategoriesService;
+import com.lelo.productmicroservice.dto.CategoryDTO;
+import com.lelo.productmicroservice.entity.Category;
+import com.lelo.productmicroservice.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,22 +15,22 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
-public class CategoriesController {
+public class CategoryController {
 
     @Autowired
-    CategoriesService categoriesService;
+    CategoryService categoryService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Categories addCategories(@RequestBody CategoriesDTO categoriesDTO){
-        Categories categories=new Categories();
+    public Category addCategories(@RequestBody CategoryDTO categoriesDTO){
+        Category categories=new Category();
         BeanUtils.copyProperties(categoriesDTO,categories);
-        categoriesService.add(categories);
+        categoryService.add(categories);
         return categories;
     }
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public List<Categories> getAllCategories(){
-        return categoriesService.getAllCategories();
+    public List<Category> getAllCategories(){
+        return categoryService.getAllCategories();
     }
 
 }

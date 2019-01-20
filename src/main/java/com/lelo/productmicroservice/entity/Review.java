@@ -21,8 +21,20 @@ public class Review {
     private String reviewId;
     private String comment;
 
+
+
     @EmbeddedId
-    ReviewIdentity reviewUtility=new ReviewIdentity();
+    ReviewIdentity reviewIdentity=new ReviewIdentity();
+
+    public Review(){
+
+    }
+
+    Review(ReviewIdentity reviewIdentity, String reviewId, String comment){
+        this.reviewIdentity=reviewIdentity;
+        this.reviewId=reviewId;
+        this.comment=comment;
+    }
 
     public String getReviewId() {
         return reviewId;

@@ -5,15 +5,15 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name=Categories.TABLE_NAME)
-public class Categories {
+@Table(name=Category.TABLE_NAME)
+public class Category {
 
     public static final String TABLE_NAME="CATEGORIES";
     private static final String ID_COLUMN="ID";
     @Id
     @GeneratedValue(generator ="uuid")                 // hibernate
     @GenericGenerator( name="uuid", strategy = "uuid2")  //hibernate
-    @Column(name =Categories.ID_COLUMN)
+    @Column(name =Category.ID_COLUMN)
     private String categoriesId;
     private String name;
 
@@ -35,7 +35,7 @@ public class Categories {
 
     @Override
     public String toString() {
-        return "Categories{" +
+        return "Category{" +
                 "categoriesId='" + categoriesId + '\'' +
                 ", name='" + name + '\'' +
                 '}';
