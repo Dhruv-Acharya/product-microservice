@@ -18,7 +18,7 @@ public class ReviewIdentity {
 
     }
 
-    ReviewIdentity(String customerId,String productId,String merchantId)
+    public ReviewIdentity(String customerId,String productId,String merchantId)
     {
         this.customerId=customerId;
         this.merchantId=merchantId;
