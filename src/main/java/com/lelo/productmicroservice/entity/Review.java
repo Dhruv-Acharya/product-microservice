@@ -14,11 +14,6 @@ public class Review {
     private static final String ID_COLUMN="ID";
 
 
-    @Id
-    @GeneratedValue(generator ="uuid")                 // hibernate
-    @GenericGenerator( name="uuid", strategy = "uuid2")  //hibernate
-    @Column(name =Review.ID_COLUMN)
-    private String reviewId;
     private String comment;
 
 
@@ -30,19 +25,10 @@ public class Review {
 
     }
 
-    Review(ReviewIdentity reviewIdentity, String reviewId, String comment){
+    public  Review(ReviewIdentity reviewIdentity){
         this.reviewIdentity=reviewIdentity;
-        this.reviewId=reviewId;
-        this.comment=comment;
     }
 
-    public String getReviewId() {
-        return reviewId;
-    }
-
-    public void setReviewId(String reviewId) {
-        this.reviewId = reviewId;
-    }
 
     public String getComment() {
         return comment;

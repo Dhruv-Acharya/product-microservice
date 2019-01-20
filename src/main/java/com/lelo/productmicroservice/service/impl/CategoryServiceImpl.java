@@ -1,7 +1,8 @@
-package com.lelo.productmicroservice.service;
+package com.lelo.productmicroservice.service.impl;
 
 import com.lelo.productmicroservice.entity.Category;
 import com.lelo.productmicroservice.repository.CategoryRepository;
+import com.lelo.productmicroservice.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
