@@ -8,4 +8,5 @@ public interface CategoryService {
 
     Category add(Category categories);
     List<Category> getAllCategories();
+    Category findOne(String category);
 }

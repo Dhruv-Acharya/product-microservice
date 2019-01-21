@@ -1,16 +1,16 @@
 package com.lelo.productmicroservice.dto;
 
 public class CategoryDTO {
-    private String categoriesId;
+    private String categoryId;
     private String name;
 
 
-    public String getCategoriesId() {
-        return categoriesId;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoriesId(String categoriesId) {
-        this.categoriesId = categoriesId;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {

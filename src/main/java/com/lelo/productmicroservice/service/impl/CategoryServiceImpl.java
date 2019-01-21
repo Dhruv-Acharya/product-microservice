@@ -22,19 +22,24 @@ public class CategoryServiceImpl implements CategoryService {
     CategoryRepository categoryRepository;
     @Override
     @Transactional(readOnly = false)
-    public Category add(Category categories) {
-        return categoryRepository.save(categories);
+    public Category add(Category category) {
+        return categoryRepository.save(category);
     }
 
     @Override
     public List<Category> getAllCategories() {
         List<Category> categoryList = new ArrayList<>();
 
-        Iterable<Category> employeeIterable = categoryRepository.findAll();
-        Iterator categoryIterator = employeeIterable.iterator();
+        Iterable<Category> categoryIterable = categoryRepository.findAll();
+        Iterator categoryIterator = categoryIterable.iterator();
         while (categoryIterator.hasNext()) {
             categoryList.add((Category) categoryIterator.next());
         }
         return categoryList;
+    }
+
+    @Override
+    public Category findOne(String categoryId) {
+        return categoryRepository.findOne(categoryId);
     }
 }

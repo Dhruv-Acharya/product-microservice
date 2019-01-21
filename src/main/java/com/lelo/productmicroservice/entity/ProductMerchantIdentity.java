@@ -1,37 +1,22 @@
 package com.lelo.productmicroservice.entity;
 
-
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Embeddable
-public class ReviewIdentity implements Serializable {
-
-    @NotNull
-    private String customerId;
+public class ProductMerchantIdentity implements Serializable {
     @NotNull
     private String productId;
     @NotNull
     private String merchantId;
 
-    ReviewIdentity(){
-
+    public ProductMerchantIdentity() {
     }
 
-    public ReviewIdentity(String customerId,String productId,String merchantId)
-    {
-        this.customerId=customerId;
-        this.merchantId=merchantId;
-        this.productId=productId;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public ProductMerchantIdentity(String productId, String merchantId) {
+        this.productId = productId;
+        this.merchantId = merchantId;
     }
 
     public String getProductId() {
