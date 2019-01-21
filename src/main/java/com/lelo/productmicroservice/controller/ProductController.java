@@ -60,7 +60,7 @@ public class ProductController {
         return new ResponseEntity<ProductMerchant>(productMerchantService.getProductMerchant(productMerchantIdentity),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/add/{productId}/{merchantId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/add/{productId}/{merchantId}", method = RequestMethod.POST)
     public ResponseEntity<ProductMerchant> addProductMerchant(@RequestBody ProductMerchantDTO productMerchantDTO) {
         ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productMerchantDTO.getProductId(),productMerchantDTO.getMerchantId());
         ProductMerchant productMerchant = new ProductMerchant();
@@ -69,7 +69,7 @@ public class ProductController {
         return new ResponseEntity<ProductMerchant>(productMerchantService.addProductMerchant(productMerchant), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/updateQuantity/{product_id}/{merchant_id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateQuantity/{productId}/{merchantId}", method = RequestMethod.PUT)
     public ResponseEntity<String> updateQuantity(@PathVariable String productId, @PathVariable String merchantId, @RequestBody ProductMerchantDTO productMerchantDTO) {
         ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productId, merchantId);
         ProductMerchant productMerchant = productMerchantService.getProductMerchant(productMerchantIdentity);
@@ -82,7 +82,7 @@ public class ProductController {
         }
     }
 
-    @RequestMapping(value = "/rating/add/{product_id}/{merchant_id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/rating/add/{productId}/{merchantId}", method = RequestMethod.PUT)
     public ResponseEntity<String> addRating(@PathVariable String productId, @PathVariable String merchantId, @RequestBody ProductMerchantDTO productMerchantDTO) {
         ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productId, merchantId);
         ProductMerchant productMerchant = productMerchantService.getProductMerchant(productMerchantIdentity);
