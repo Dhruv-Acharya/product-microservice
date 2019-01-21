@@ -19,6 +19,7 @@ public class CategoryController {
 
     @Autowired
     CategoryService categoryService;
+    @CrossOrigin("*")
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<Category> addCategories(@RequestBody CategoryDTO categoriesDTO){
@@ -27,6 +28,7 @@ public class CategoryController {
         categoryService.add(category);
         return new ResponseEntity<Category>(category,HttpStatus.CREATED);
     }
+    @CrossOrigin("*")
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public ResponseEntity<List<Category>> getAllCategories(){
