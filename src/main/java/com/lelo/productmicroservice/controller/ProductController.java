@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/product")
 public class ProductController {
     @Autowired
     ProductService productService;
