@@ -42,19 +42,22 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
 
     @Override
     public List<MerchantDTO> getMerchantFromProduct(String productId) {
-        System.out.println(productId);
         List<String> merchantIds = productMerchantRepository.findByProductId(productId);
         MerchantList merchantList = new MerchantList(merchantIds);
-        final String uri = "https://merchant-lelo.herokuapp.com/merchant/getMerchantsByIds";
+
+
+//        final String uri = "https://merchant-lelo.herokuapp.com/merchant/getMerchantsByIds";
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<?> returns = restTemplate.postForEntity(uri, merchantList, MerchantList.class);
-        MerchantDTOList merchantDTOList = (MerchantDTOList) returns.getBody();
+        List<MerchantDTOList> merchantDTOList = restTemplate.postForObject("https://merchant-lelo.herokuapp.com/merchant/getMerchantsByIds" ,merchantIds, List.class);
+//        ResponseEntity<?> returns = restTemplate.postForEntity(uri, merchantList, MerchantList.class);
+//        MerchantDTOList merchantDTOList = (MerchantDTOList) returns.getBody();
 //        MerchantDTO result = restTemplate.getForObject(uri, MerchantDTO.class);
-//        Iterator iterator= merchantIds.iterator();
-//        while (iterator.hasNext()) {
-//            System.out.println((String) iterator.next());
-//        }
-        return merchantDTOList.getMerchantDTOList();
+        Iterator iterator= merchantDTOList.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(((MerchantDTO) iterator.next()).toString());
+        }
+        return null;
+//        return merchantDTOList.getMerchantDTOList();
     }
 //    @Override
 //    public List<ProductMerchant> findByMerchantId(String merchantId) {
