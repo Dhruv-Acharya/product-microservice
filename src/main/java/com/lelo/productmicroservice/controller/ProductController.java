@@ -2,6 +2,7 @@ package com.lelo.productmicroservice.controller;
 
 import com.lelo.productmicroservice.dto.ProductDTO;
 import com.lelo.productmicroservice.dto.ProductMerchantDTO;
+import com.lelo.productmicroservice.dto.ProductMerchantResponseDTO;
 import com.lelo.productmicroservice.entity.Category;
 import com.lelo.productmicroservice.entity.Product;
 import com.lelo.productmicroservice.entity.ProductMerchant;
@@ -57,9 +58,16 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/get/{productId}/{merchantId}", method = RequestMethod.GET)
-    public ResponseEntity<ProductMerchant> findByProductIdAndMerchantId(@PathVariable String productId, @PathVariable String merchantId) {
+    public ResponseEntity<ProductMerchantResponseDTO> findByProductIdAndMerchantId(@PathVariable String productId, @PathVariable String merchantId) {
         ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productId, merchantId);
-        return new ResponseEntity<ProductMerchant>(productMerchantService.getProductMerchant(productMerchantIdentity),HttpStatus.OK);
+        ProductMerchant productMerchant = productMerchantService.getProductMerchant(productMerchantIdentity);
+        Product product = productService.findOne(productMerchant.getProductMerchantIdentity().getProductId());
+        String categoryName = product.getCategory().getName();
+        ProductMerchantResponseDTO productMerchantResponseDTO= new ProductMerchantResponseDTO();
+        BeanUtils.copyProperties(productMerchant, productMerchantResponseDTO);
+        BeanUtils.copyProperties(productMerchant, product);
+        productMerchantResponseDTO.setCategoryName(categoryName);
+        return new ResponseEntity<ProductMerchantResponseDTO>(productMerchantResponseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/add/{productId}/{merchantId}", method = RequestMethod.POST)

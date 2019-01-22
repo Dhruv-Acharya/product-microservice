@@ -1,5 +1,8 @@
 package com.lelo.productmicroservice.service.impl;
 
+import com.lelo.productmicroservice.dto.ProductMerchantResponseDTO;
+import com.lelo.productmicroservice.entity.Category;
+import com.lelo.productmicroservice.entity.Product;
 import com.lelo.productmicroservice.entity.ProductMerchant;
 import com.lelo.productmicroservice.entity.ProductMerchantIdentity;
 import com.lelo.productmicroservice.repository.ProductMerchantRepository;
