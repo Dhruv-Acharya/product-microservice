@@ -1,5 +1,8 @@
 package com.lelo.productmicroservice.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.POJONode;
 import com.lelo.productmicroservice.dto.MerchantDTO;
 import com.lelo.productmicroservice.dto.MerchantDTOList;
 import com.lelo.productmicroservice.dto.MerchantList;
@@ -13,10 +16,14 @@ import com.lelo.productmicroservice.repository.ProductRepository;
 import com.lelo.productmicroservice.service.ProductMerchantService;
 import com.lelo.productmicroservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,20 +51,30 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
     public List<MerchantDTO> getMerchantFromProduct(String productId) {
         List<String> merchantIds = productMerchantRepository.findByProductId(productId);
         MerchantList merchantList = new MerchantList(merchantIds);
-
-
-//        final String uri = "https://merchant-lelo.herokuapp.com/merchant/getMerchantsByIds";
+        final String uri = "https://merchant-lelo.herokuapp.com/merchant/getMerchantsByIds";
+        ObjectMapper mapper = new ObjectMapper();
         RestTemplate restTemplate = new RestTemplate();
-        List<MerchantDTOList> merchantDTOList = restTemplate.postForObject("https://merchant-lelo.herokuapp.com/merchant/getMerchantsByIds" ,merchantIds, List.class);
+        HttpHeaders headers=new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        HttpEntity requestEntity=new HttpEntity(merchantIds, headers);
+        List merchantDTOList;
+        System.out.println(requestEntity.toString());
+        ResponseEntity<?> entityResponse = restTemplate.exchange(uri, HttpMethod.POST,requestEntity,List.class);
+        merchantDTOList = (List) entityResponse.getBody();
+//        List<MerchantDTO> myObjects = mapper.readValue(entityResponse.getBody(), new TypeReference<List<MerchantDTO>>(){});
+//        RestTemplate restTemplate = new RestTemplate();
+//        List<MerchantDTOList> merchantDTOList = restTemplate.postForObject("https://merchant-lelo.herokuapp.com/merchant/getMerchantsByIds" ,merchantIds, List.class);
 //        ResponseEntity<?> returns = restTemplate.postForEntity(uri, merchantList, MerchantList.class);
 //        MerchantDTOList merchantDTOList = (MerchantDTOList) returns.getBody();
 //        MerchantDTO result = restTemplate.getForObject(uri, MerchantDTO.class);
         Iterator iterator= merchantDTOList.iterator();
+        List<MerchantDTO> merchantDTOS = new ArrayList<>();
         while (iterator.hasNext()) {
-            System.out.println(((MerchantDTO) iterator.next()).toString());
+            MerchantDTO merchantDTO = mapper.convertValue(iterator.next(), MerchantDTO.class);
+            merchantDTOS.add(merchantDTO);
         }
-        return null;
-//        return merchantDTOList.getMerchantDTOList();
+//        return null;
+        return merchantDTOS;
     }
 //    @Override
 //    public List<ProductMerchant> findByMerchantId(String merchantId) {
