@@ -17,5 +17,7 @@ public interface ProductMerchantRepository extends CrudRepository<ProductMerchan
 //    @Query("select pm from PRODUCT_MERCHANT pm where pm.productId = :productId AND u.merchantId NOT LIKE :merchantId")
 //    List<ProductMerchant> findByProductIdNotLikeMerchantId(@Param("productId") String productId,
 //                                   @Param("merchantId") String merchantId);
+    @Query(value = "SELECT merchant_id FROM PRODUCT_MERCHANT WHERE product_id = :productId", nativeQuery = true)
+    List<String> findByProductId(@Param(value = "productId") String productId);
 }
 

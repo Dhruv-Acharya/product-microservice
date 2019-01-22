@@ -18,20 +18,17 @@ public class ProductMerchant {
     private int quantityOffered;
     private int quantitySold;
     private double discount;
-    private double rating;
-    private double ratingCounter;
+
 
     public ProductMerchant() {
     }
 
-    public ProductMerchant(ProductMerchantIdentity productMerchantIdentity, double price, int quantityOffered, int quantitySold, double discount, double rating, double ratingCounter) {
+    public ProductMerchant(ProductMerchantIdentity productMerchantIdentity, double price, int quantityOffered, int quantitySold, double discount) {
         this.productMerchantIdentity = productMerchantIdentity;
         this.price = price;
         this.quantityOffered = quantityOffered;
         this.quantitySold = quantitySold;
         this.discount = discount;
-        this.rating = rating;
-        this.ratingCounter = ratingCounter;
     }
 
     public ProductMerchantIdentity getProductMerchantIdentity() {
@@ -72,21 +69,5 @@ public class ProductMerchant {
 
     public void setDiscount(double discount) {
         this.discount = discount;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public double getRatingCounter() {
-        return ratingCounter;
-    }
-
-    public void setRatingCounter(double ratingCounter) {
-        this.ratingCounter = ratingCounter;
     }
 }

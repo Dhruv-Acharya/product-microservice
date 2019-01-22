@@ -1,5 +1,6 @@
 package com.lelo.productmicroservice.controller;
 
+import com.lelo.productmicroservice.dto.MerchantDTO;
 import com.lelo.productmicroservice.dto.ProductDTO;
 import com.lelo.productmicroservice.dto.ProductMerchantDTO;
 import com.lelo.productmicroservice.dto.ProductMerchantResponseDTO;
@@ -35,12 +36,11 @@ public class ProductController {
     public ResponseEntity<String> addProduct(@RequestBody ProductDTO productDTO) {
         Product product = new Product();
 
-        Category category = new Category();
-        category = categoryService.findOne(productDTO.getCategoryId());
+        Category category = categoryService.findOne(productDTO.getCategoryId());
         product.setImageUrl(productDTO.getImageUrl());
         product.setCategory(category);
         product.setDescription(productDTO.getDescription());
-        product.setProductName(productDTO.getProductName());
+        product.setName(productDTO.getName());
         product.setUsp(productDTO.getUsp());
 
         Product createdProduct = productService.save(product);
@@ -57,17 +57,24 @@ public class ProductController {
         return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/get/{productId}", method = RequestMethod.GET)
+    public ResponseEntity<Product> findByProductId(@PathVariable String productId) {
+        return new ResponseEntity<Product>(productService.findOne(productId), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/get/{productId}/{merchantId}", method = RequestMethod.GET)
-    public ResponseEntity<ProductMerchantResponseDTO> findByProductIdAndMerchantId(@PathVariable String productId, @PathVariable String merchantId) {
+    public ResponseEntity<ProductMerchantDTO> findByProductIdAndMerchantId(@PathVariable String productId, @PathVariable String merchantId) {
         ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productId, merchantId);
         ProductMerchant productMerchant = productMerchantService.getProductMerchant(productMerchantIdentity);
-        Product product = productService.findOne(productMerchant.getProductMerchantIdentity().getProductId());
-        String categoryName = product.getCategory().getName();
-        ProductMerchantResponseDTO productMerchantResponseDTO= new ProductMerchantResponseDTO();
-        BeanUtils.copyProperties(productMerchant, productMerchantResponseDTO);
-        BeanUtils.copyProperties(productMerchant, product);
-        productMerchantResponseDTO.setCategoryName(categoryName);
-        return new ResponseEntity<ProductMerchantResponseDTO>(productMerchantResponseDTO, HttpStatus.OK);
+//        Product product = productService.findOne(productMerchant.getProductMerchantIdentity().getProductId());
+//        String categoryName = product.getCategory().getName();
+        ProductMerchantDTO productMerchantDTO= new ProductMerchantDTO();
+        BeanUtils.copyProperties(productMerchant, productMerchantDTO);
+        productMerchantDTO.setProductId(productId);
+        productMerchantDTO.setMerchantId(merchantId);
+//        BeanUtils.copyProperties(productMerchant, product);
+//        productMerchantResponseDTO.setCategoryName(categoryName);
+        return new ResponseEntity<ProductMerchantDTO>(productMerchantDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/add/{productId}/{merchantId}", method = RequestMethod.POST)
@@ -92,16 +99,21 @@ public class ProductController {
         }
     }
 
-    @RequestMapping(value = "/rating/add/{productId}/{merchantId}", method = RequestMethod.PUT)
-    public ResponseEntity<String> addRating(@PathVariable String productId, @PathVariable String merchantId, @RequestBody ProductMerchantDTO productMerchantDTO) {
-        ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productId, merchantId);
-        ProductMerchant productMerchant = productMerchantService.getProductMerchant(productMerchantIdentity);
-        boolean result = productMerchantService.addRating(productMerchant, productMerchantDTO.getRating());
+    @RequestMapping(value = "/rating/add/{productId}", method = RequestMethod.PUT)
+    public ResponseEntity<String> addRating(@PathVariable String productId, @RequestBody ProductMerchantDTO productMerchantDTO) {
+//        ProductMerchant productMerchant = productMerchantService.getProductMerchant(productMerchantIdentity);
+        Product product = productService.findOne(productId);
+        boolean result = productMerchantService.addRating(product, productMerchantDTO.getRating());
         if(result) {
             return new ResponseEntity<String>("Success", HttpStatus.OK);
         }
         else {
             return new ResponseEntity<String>("Failure", HttpStatus.OK);
         }
+    }
+
+    @RequestMapping(value = "/getMerchants/{productId}", method = RequestMethod.GET)
+    public ResponseEntity<List<MerchantDTO>> getMerchants(@PathVariable String productId) {
+        return new ResponseEntity<List<MerchantDTO>>(productMerchantService.getMerchantFromProduct(productId), HttpStatus.OK);
     }
 }

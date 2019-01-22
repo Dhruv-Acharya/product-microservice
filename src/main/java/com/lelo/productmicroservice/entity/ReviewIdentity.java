@@ -12,17 +12,14 @@ public class ReviewIdentity implements Serializable {
     private String customerId;
     @NotNull
     private String productId;
-    @NotNull
-    private String merchantId;
 
     ReviewIdentity(){
 
     }
 
-    public ReviewIdentity(String customerId,String productId,String merchantId)
+    public ReviewIdentity(String customerId,String productId)
     {
         this.customerId=customerId;
-        this.merchantId=merchantId;
         this.productId=productId;
     }
 
@@ -42,11 +39,4 @@ public class ReviewIdentity implements Serializable {
         this.productId = productId;
     }
 
-    public String getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
-    }
 }

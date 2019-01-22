@@ -2,22 +2,30 @@ package com.lelo.productmicroservice.dto;
 
 public class ProductDTO {
     private String productId;
-    private String productName;
+    private String name;
     private String usp;
     private String description;
     private String imageUrl;
     private String categoryId;
+    private double rating;
+    private double ratingCounter;
+    private double lowestPrice;
+    private double highestPrice;
 
     public ProductDTO() {
     }
 
-    public ProductDTO(String productId, String productName, String usp, String description, String imageUrl, String categoryId) {
+    public ProductDTO(String productId, String name, String usp, String description, String imageUrl, String categoryId, double rating, double ratingCounter, double lowestPrice, double highestPrice) {
         this.productId = productId;
-        this.productName = productName;
+        this.name = name;
         this.usp = usp;
         this.description = description;
         this.imageUrl = imageUrl;
         this.categoryId = categoryId;
+        this.rating = rating;
+        this.ratingCounter = ratingCounter;
+        this.lowestPrice = lowestPrice;
+        this.highestPrice = highestPrice;
     }
 
     public String getProductId() {
@@ -28,12 +36,12 @@ public class ProductDTO {
         this.productId = productId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsp() {
@@ -66,5 +74,37 @@ public class ProductDTO {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public double getRatingCounter() {
+        return ratingCounter;
+    }
+
+    public void setRatingCounter(double ratingCounter) {
+        this.ratingCounter = ratingCounter;
+    }
+
+    public double getLowestPrice() {
+        return lowestPrice;
+    }
+
+    public void setLowestPrice(double lowestPrice) {
+        this.lowestPrice = lowestPrice;
+    }
+
+    public double getHighestPrice() {
+        return highestPrice;
+    }
+
+    public void setHighestPrice(double highestPrice) {
+        this.highestPrice = highestPrice;
     }
 }

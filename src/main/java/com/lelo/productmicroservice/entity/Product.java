@@ -15,25 +15,33 @@ public class Product {
     @GenericGenerator( name="uuid", strategy = "uuid2")
     private String productId;
     @NotNull
-    private String productName;
+    private String name;
     @NotNull
     private String usp;
     private String description;
     private String imageUrl;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
+    private double rating;
+    private double ratingCounter;
+    private double lowestPrice;
+    private double highestPrice;
 
     public Product() {
     }
 
-    public Product(String productId, String productName, String usp, String description, String imageUrl, Category category) {
+    public Product(String productId, String name, String usp, String description, String imageUrl, Category category, double rating, double ratingCounter, double lowestPrice, double highestPrice) {
         this.productId = productId;
-        this.productName = productName;
+        this.name = name;
         this.usp = usp;
         this.description = description;
         this.imageUrl = imageUrl;
         this.category = category;
+        this.rating = rating;
+        this.ratingCounter = ratingCounter;
+        this.lowestPrice = lowestPrice;
+        this.highestPrice = highestPrice;
     }
 
     public String getProductId() {
@@ -44,12 +52,12 @@ public class Product {
         this.productId = productId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsp() {
@@ -82,5 +90,37 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public double getRatingCounter() {
+        return ratingCounter;
+    }
+
+    public void setRatingCounter(double ratingCounter) {
+        this.ratingCounter = ratingCounter;
+    }
+
+    public double getLowestPrice() {
+        return lowestPrice;
+    }
+
+    public void setLowestPrice(double lowestPrice) {
+        this.lowestPrice = lowestPrice;
+    }
+
+    public double getHighestPrice() {
+        return highestPrice;
+    }
+
+    public void setHighestPrice(double highestPrice) {
+        this.highestPrice = highestPrice;
     }
 }

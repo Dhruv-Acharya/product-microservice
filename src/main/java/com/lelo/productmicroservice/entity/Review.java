@@ -13,10 +13,7 @@ public class Review {
     public static final String TABLE_NAME="REVIEW";
     private static final String ID_COLUMN="ID";
 
-
     private String comment;
-
-
 
     @EmbeddedId
     ReviewIdentity reviewIdentity=new ReviewIdentity();
