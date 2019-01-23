@@ -158,9 +158,9 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
         int[] mQuantityOffered = new int[listSize];
         int[] quantitySold = new int[listSize];
         double[] overallValue = new double[listSize];
-        MerchantListResponseDTO merchantListResponseDTO = new MerchantListResponseDTO();
-        for (int i=0;i<merchantListDTOAlgo.size();i++) {
 
+        for (int i=0;i<merchantListDTOAlgo.size();i++) {
+            MerchantListResponseDTO merchantListResponseDTO = new MerchantListResponseDTO();
             mRate[i]=merchantListDTOAlgo.get(i).getMerchantRating();
             merchantListResponseDTO.setMerchantId(merchantListDTOAlgo.get(i).getMerchantId());
             merchantListResponseDTO.setDiscount(merchantListDTOAlgo.get(i).getDiscount());
