@@ -1,5 +1,6 @@
 package com.lelo.productmicroservice.service.impl;
 
+import com.lelo.productmicroservice.Utilities.Constans;
 import com.lelo.productmicroservice.entity.Category;
 import com.lelo.productmicroservice.entity.Product;
 import com.lelo.productmicroservice.repository.CategoryRepository;
@@ -7,6 +8,7 @@ import com.lelo.productmicroservice.repository.ProductRepository;
 import com.lelo.productmicroservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,6 +25,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(Product product) {
+        final String uri = Constans.SEARCH_MICROSERVICE_BASE_URL + "/product/add";
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.postForObject( uri, product, String.class);
         return productRepository.save(product);
     }
 

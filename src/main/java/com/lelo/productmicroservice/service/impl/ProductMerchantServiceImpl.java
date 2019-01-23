@@ -5,6 +5,7 @@ import com.lelo.productmicroservice.Utilities.Constans;
 import com.lelo.productmicroservice.dto.MerchantDTO;
 import com.lelo.productmicroservice.dto.MerchantListDTO;
 import com.lelo.productmicroservice.dto.MerchantListResponseDTO;
+import com.lelo.productmicroservice.dto.ProductMerchantDTO;
 import com.lelo.productmicroservice.entity.Product;
 import com.lelo.productmicroservice.entity.ProductMerchant;
 import com.lelo.productmicroservice.entity.ProductMerchantIdentity;
@@ -46,6 +47,17 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
 
     @Override
     public ProductMerchant addProductMerchant(ProductMerchant productMerchant) {
+        Product product = productService.findOne(productMerchant.getProductMerchantIdentity().getProductId());
+        if(productMerchant.getPrice() < product.getLowestPrice() || product.getLowestPrice() == 0) {
+            product.setLowestPrice(productMerchant.getPrice());
+        }
+        if(productMerchant.getPrice() > product.getHighestPrice()) {
+            product.setHighestPrice(productMerchant.getPrice());
+        }
+        productService.save(product);
+
+
+
         return productMerchantRepository.save(productMerchant);
     }
 
