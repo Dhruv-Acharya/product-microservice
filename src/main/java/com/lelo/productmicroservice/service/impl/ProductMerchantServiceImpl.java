@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -148,7 +149,48 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
     }
 
     public List<MerchantListResponseDTO> rankMerchant(List<MerchantListDTO> merchantListDTOAlgo) {
+        List<MerchantListResponseDTO> merchantListResponseDTOList = new ArrayList<>();
+        int listSize = merchantListDTOAlgo.size();
+        double[] mRate = new double[listSize];
+        double[] price = new double[listSize];
+        double[] productRating = new double[listSize];
+        double[] discount = new double[listSize];
+        int[] mQuantityOffered = new int[listSize];
+        int[] quantitySold = new int[listSize];
+        double[] overallValue = new double[listSize];
+        MerchantListResponseDTO merchantListResponseDTO = new MerchantListResponseDTO();
+        for (int i=0;i<merchantListDTOAlgo.size();i++) {
 
-        return null;
+            mRate[i]=merchantListDTOAlgo.get(i).getMerchantRating();
+            merchantListResponseDTO.setMerchantId(merchantListDTOAlgo.get(i).getMerchantId());
+            merchantListResponseDTO.setDiscount(merchantListDTOAlgo.get(i).getDiscount());
+            merchantListResponseDTO.setEmailId(merchantListDTOAlgo.get(i).getEmailId());
+            merchantListResponseDTO.setName(merchantListDTOAlgo.get(i).getName());
+            merchantListResponseDTO.setQunatity(merchantListDTOAlgo.get(i).getQuantityOffered());
+            merchantListResponseDTO.setPrice(merchantListDTOAlgo.get(i).getPrice());
+            price[i]=merchantListDTOAlgo.get(i).getPrice();
+            productRating[i]=merchantListDTOAlgo.get(i).getProductRating();
+            discount[i]=merchantListDTOAlgo.get(i).getDiscount();
+            mQuantityOffered[i]=merchantListDTOAlgo.get(i).getQuantityOffered();
+            quantitySold[i]=merchantListDTOAlgo.get(i).getQuantitySold();
+            overallValue[i]=(price[i]*1/3)+(mRate[i]*1/6)+(discount[i]*1/4)+(quantitySold[i]*1/6)+(mQuantityOffered[i]*1/12);
+            merchantListResponseDTOList.add(merchantListResponseDTO);
+        }
+        int[] rank = new int[listSize];
+        for (int i=0;i<listSize;i++){
+            rank[i]=i+1;
+        }
+        for (int i=0;i<listSize;i++){
+            for (int j=i;j<listSize;j++){
+                if(overallValue[i]<overallValue[j]){
+                    int temp = rank[i];
+                    rank[i]=rank[j];
+                    rank[j]=temp;
+
+                }
+            }
+            merchantListResponseDTOList.get(i).setRating((merchantListResponseDTOList.get(i).getRating()+(listSize/rank[i]))/2);
+        }
+        return merchantListResponseDTOList;
     }
 }
