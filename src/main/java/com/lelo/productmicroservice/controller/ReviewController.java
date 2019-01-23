@@ -19,7 +19,7 @@ public class ReviewController {
     ReviewService reviewService;
 
     @CrossOrigin("*")
-    @RequestMapping(value = "/add/{customer_id}/{product_id}/{merchant_id}",method = RequestMethod.POST)
+    @RequestMapping(value = "/add/{customer_id}/{product_id}",method = RequestMethod.POST)
     public void addReview(@PathVariable("customer_id") String customerId, @PathVariable("product_id") String productId, @RequestBody String comment){
         ReviewIdentity reviewIdentity=new ReviewIdentity(customerId,productId);
         Review review=new Review(reviewIdentity);
@@ -28,9 +28,8 @@ public class ReviewController {
     }
 
     @CrossOrigin("*")
-    @RequestMapping(value = "/getReview/{product_id}/{merchant_id}",method = RequestMethod.GET)
-    public List<Review> findAll(@PathVariable("product_id") String productId,
-                                @PathVariable("merchant_id") String merchantId) {
-        return reviewService.findByProductIdAndMerchantId(productId,merchantId);
+    @RequestMapping(value = "/getReview/{product_id}",method = RequestMethod.GET)
+    public List<Review> findAll(@PathVariable("product_id") String productId) {
+        return reviewService.findByProductId(productId);
     }
 }

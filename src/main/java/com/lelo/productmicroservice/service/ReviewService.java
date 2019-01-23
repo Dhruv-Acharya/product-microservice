@@ -10,5 +10,5 @@ public interface ReviewService {
     Review save(Review review);
     Review findAll();
     Review remove(String reviewId);
-    List<Review> findByProductIdAndMerchantId(String productId, String merchantId);
+    List<Review> findByProductId(String productId);
 }

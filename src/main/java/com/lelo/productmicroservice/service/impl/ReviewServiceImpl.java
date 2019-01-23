@@ -37,7 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> findByProductIdAndMerchantId(String productId, String merchantId) {
+    public List<Review> findByProductId(String productId) {
         return null;
     }
 }
