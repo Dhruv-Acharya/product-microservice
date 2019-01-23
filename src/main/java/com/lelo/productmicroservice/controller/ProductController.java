@@ -1,9 +1,9 @@
 package com.lelo.productmicroservice.controller;
 
 import com.lelo.productmicroservice.dto.MerchantDTO;
+import com.lelo.productmicroservice.dto.MerchantListResponseDTO;
 import com.lelo.productmicroservice.dto.ProductDTO;
 import com.lelo.productmicroservice.dto.ProductMerchantDTO;
-import com.lelo.productmicroservice.dto.ProductMerchantResponseDTO;
 import com.lelo.productmicroservice.entity.Category;
 import com.lelo.productmicroservice.entity.Product;
 import com.lelo.productmicroservice.entity.ProductMerchant;
@@ -113,7 +113,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/getMerchants/{productId}", method = RequestMethod.GET)
-    public ResponseEntity<List<MerchantDTO>> getMerchants(@PathVariable String productId) {
-        return new ResponseEntity<List<MerchantDTO>>(productMerchantService.getMerchantFromProduct(productId), HttpStatus.OK);
+    public ResponseEntity<List<MerchantListResponseDTO>> getMerchants(@PathVariable String productId) {
+        return new ResponseEntity<List<MerchantListResponseDTO>>(productMerchantService.getMerchantFromProduct(productId), HttpStatus.OK);
     }
 }
