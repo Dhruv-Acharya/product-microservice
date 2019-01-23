@@ -18,6 +18,7 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/add/{customer_id}/{product_id}/{merchant_id}",method = RequestMethod.POST)
     public void addReview(@PathVariable("customer_id") String customerId, @PathVariable("product_id") String productId, @RequestBody String comment){
         ReviewIdentity reviewIdentity=new ReviewIdentity(customerId,productId);
@@ -26,6 +27,7 @@ public class ReviewController {
        reviewService.save(review);
     }
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/getReview/{product_id}/{merchant_id}",method = RequestMethod.GET)
     public List<Review> findAll(@PathVariable("product_id") String productId,
                                 @PathVariable("merchant_id") String merchantId) {

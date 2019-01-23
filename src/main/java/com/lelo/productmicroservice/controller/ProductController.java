@@ -31,6 +31,7 @@ public class ProductController {
     @Autowired
     ProductMerchantService productMerchantService;
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<String> addProduct(@RequestBody ProductDTO productDTO) {
         Product product = new Product();
@@ -47,6 +48,7 @@ public class ProductController {
         return new ResponseEntity<String>(createdProduct.getProductId(), HttpStatus.CREATED);
     }
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/getByCategory/{categoryId}", method = RequestMethod.GET)
     public ResponseEntity<List<Product>> getByCategory(@PathVariable String categoryId) {
         Category category = categoryService.findOne(categoryId);
@@ -56,11 +58,13 @@ public class ProductController {
         return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
     }
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/get/{productId}", method = RequestMethod.GET)
     public ResponseEntity<Product> findByProductId(@PathVariable String productId) {
         return new ResponseEntity<Product>(productService.findOne(productId), HttpStatus.OK);
     }
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/get/{productId}/{merchantId}", method = RequestMethod.GET)
     public ResponseEntity<ProductMerchantDTO> findByProductIdAndMerchantId(@PathVariable String productId, @PathVariable String merchantId) {
         ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productId, merchantId);
@@ -76,6 +80,7 @@ public class ProductController {
         return new ResponseEntity<ProductMerchantDTO>(productMerchantDTO, HttpStatus.OK);
     }
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/add/{productId}/{merchantId}", method = RequestMethod.POST)
     public ResponseEntity<ProductMerchant> addProductMerchant(@RequestBody ProductMerchantDTO productMerchantDTO) {
         ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productMerchantDTO.getProductId(),productMerchantDTO.getMerchantId());
@@ -85,6 +90,7 @@ public class ProductController {
         return new ResponseEntity<ProductMerchant>(productMerchantService.addProductMerchant(productMerchant), HttpStatus.CREATED);
     }
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/updateQuantity/{productId}/{merchantId}", method = RequestMethod.PUT)
     public ResponseEntity<String> updateQuantity(@PathVariable String productId, @PathVariable String merchantId, @RequestBody ProductMerchantDTO productMerchantDTO) {
         ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productId, merchantId);
@@ -98,6 +104,7 @@ public class ProductController {
         }
     }
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/rating/add/{productId}", method = RequestMethod.PUT)
     public ResponseEntity<String> addRating(@PathVariable String productId, @RequestBody ProductMerchantDTO productMerchantDTO) {
 //        ProductMerchant productMerchant = productMerchantService.getProductMerchant(productMerchantIdentity);
@@ -111,6 +118,7 @@ public class ProductController {
         }
     }
 
+    @CrossOrigin("*")
     @RequestMapping(value = "/getMerchants/{productId}", method = RequestMethod.GET)
     public ResponseEntity<List<MerchantListResponseDTO>> getMerchants(@PathVariable String productId) {
         return new ResponseEntity<List<MerchantListResponseDTO>>(productMerchantService.getMerchantFromProduct(productId), HttpStatus.OK);
