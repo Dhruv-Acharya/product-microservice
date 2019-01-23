@@ -16,7 +16,7 @@ public class Review {
     private String comment;
 
     @EmbeddedId
-    ReviewIdentity reviewIdentity=new ReviewIdentity();
+    ReviewIdentity reviewIdentity;
 
     public Review(){
 
@@ -26,6 +26,13 @@ public class Review {
         this.reviewIdentity=reviewIdentity;
     }
 
+    public ReviewIdentity getReviewIdentity() {
+        return reviewIdentity;
+    }
+
+    public void setReviewIdentity(ReviewIdentity reviewIdentity) {
+        this.reviewIdentity = reviewIdentity;
+    }
 
     public String getComment() {
         return comment;

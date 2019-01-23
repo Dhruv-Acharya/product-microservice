@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface ReviewService {
     Review save(Review review);
-    Review findAll();
     Review remove(String reviewId);
     List<Review> findByProductId(String productId);
 }
