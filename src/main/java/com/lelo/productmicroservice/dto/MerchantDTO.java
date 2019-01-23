@@ -4,12 +4,12 @@ public class MerchantDTO {
     private String merchantId;
     private String name;
     private String emailId;
-    private String rating;
+    private double rating;
 
     public MerchantDTO() {
     }
 
-    public MerchantDTO(String merchantId, String name, String emailId, String rating) {
+    public MerchantDTO(String merchantId, String name, String emailId, double rating) {
         this.merchantId = merchantId;
         this.name = name;
         this.emailId = emailId;
@@ -40,11 +40,11 @@ public class MerchantDTO {
         this.emailId = emailId;
     }
 
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

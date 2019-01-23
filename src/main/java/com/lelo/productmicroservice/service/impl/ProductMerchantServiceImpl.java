@@ -3,9 +3,8 @@ package com.lelo.productmicroservice.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lelo.productmicroservice.Utilities.Constans;
 import com.lelo.productmicroservice.dto.MerchantDTO;
-import com.lelo.productmicroservice.dto.MerchantDTOList;
+import com.lelo.productmicroservice.dto.MerchantListDTO;
 import com.lelo.productmicroservice.dto.MerchantListResponseDTO;
-import com.lelo.productmicroservice.dto.ProductMerchantDTO;
 import com.lelo.productmicroservice.entity.Product;
 import com.lelo.productmicroservice.entity.ProductMerchant;
 import com.lelo.productmicroservice.entity.ProductMerchantIdentity;
@@ -70,26 +69,44 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
 //        MerchantDTOList merchantDTOList = (MerchantDTOList) returns.getBody();
 //        MerchantDTO result = restTemplate.getForObject(uri, MerchantDTO.class);
         Iterator iterator= merchantDTOList.iterator();
+        List<MerchantListDTO> merchantListAlgo = new ArrayList<>();
         List<MerchantListResponseDTO> merchantDTOS = new ArrayList<>();
         while (iterator.hasNext()) {
             MerchantDTO merchantDTO = mapper.convertValue(iterator.next(), MerchantDTO.class);
+            MerchantListDTO merchantListDTOAlog = new MerchantListDTO();
 
-            MerchantListResponseDTO merchantListResponseDTO = new MerchantListResponseDTO();
-            merchantListResponseDTO.setMerchantId(merchantDTO.getMerchantId());
-            merchantListResponseDTO.setName(merchantDTO.getName());
+            //response
+//            MerchantListResponseDTO merchantListResponseDTO = new MerchantListResponseDTO();
+//            merchantListResponseDTO.setMerchantId(merchantDTO.getMerchantId());
+//            merchantListResponseDTO.setName(merchantDTO.getName());
+
+            //for alog
+            merchantListDTOAlog.setMerchantId(merchantDTO.getMerchantId());
+            merchantListDTOAlog.setName(merchantDTO.getName());
+            merchantListDTOAlog.setEmailId(merchantDTO.getEmailId());
+            merchantListDTOAlog.setMerchantRating(merchantDTO.getRating());
 
             ProductMerchantIdentity productMerchantIdentity = new ProductMerchantIdentity(productId,merchantDTO.getMerchantId());
             ProductMerchant productMerchant = this.getProductMerchant(productMerchantIdentity);
 
-            merchantListResponseDTO.setDiscount(productMerchant.getDiscount());
-            merchantListResponseDTO.setPrice(productMerchant.getPrice());
+            merchantListDTOAlog.setDiscount(productMerchant.getDiscount());
+            merchantListDTOAlog.setPrice(productMerchant.getPrice());
+            merchantListDTOAlog.setQuantitySold(productMerchant.getQuantitySold());
+            merchantListDTOAlog.setQuantityOffered(productMerchant.getQuantityOffered());
 
-//            Product product = productService.findOne(productId);
+//            merchantListResponseDTO.setDiscount(productMerchant.getDiscount());
+//            merchantListResponseDTO.setPrice(productMerchant.getPrice());
+
+
+
+            Product product = productService.findOne(productId);
+            merchantListDTOAlog.setProductRating(product.getRating());
 //            merchantListResponseDTO.setRating(product.getRating());
 //            merchantListResponseDTO.set;
-
-            merchantDTOS.add(merchantListResponseDTO);
+//            System.out.println(merchantListDTOAlog.toString());
+            merchantListAlgo.add(merchantListDTOAlog);
         }
+        merchantDTOS = rankMerchant(merchantListAlgo);
 //        return null;
         return merchantDTOS;
     }
@@ -128,5 +145,10 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
         } else {
             return false;
         }
+    }
+
+    public List<MerchantListResponseDTO> rankMerchant(List<MerchantListDTO> merchantListDTOAlgo) {
+
+        return null;
     }
 }

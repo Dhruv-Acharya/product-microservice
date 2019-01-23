@@ -1,6 +1,5 @@
 package com.lelo.productmicroservice.controller;
 
-import com.lelo.productmicroservice.dto.MerchantDTO;
 import com.lelo.productmicroservice.dto.MerchantListResponseDTO;
 import com.lelo.productmicroservice.dto.ProductDTO;
 import com.lelo.productmicroservice.dto.ProductMerchantDTO;
