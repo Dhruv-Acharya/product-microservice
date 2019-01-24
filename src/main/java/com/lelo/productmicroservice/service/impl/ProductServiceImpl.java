@@ -3,6 +3,7 @@ package com.lelo.productmicroservice.service.impl;
 import com.lelo.productmicroservice.Utilities.Constans;
 import com.lelo.productmicroservice.entity.Category;
 import com.lelo.productmicroservice.entity.Product;
+import com.lelo.productmicroservice.exception.ProductNameNotFound;
 import com.lelo.productmicroservice.repository.CategoryRepository;
 import com.lelo.productmicroservice.repository.ProductRepository;
 import com.lelo.productmicroservice.service.ProductService;
@@ -26,8 +27,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(Product product) {
+        if(product.getName() == null) {
+            throw new ProductNameNotFound();
+        }
         final String uri = Constans.SEARCH_MICROSERVICE_BASE_URL + "/product/add";
-
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.postForObject( uri, product, String.class);
         return productRepository.save(product);
