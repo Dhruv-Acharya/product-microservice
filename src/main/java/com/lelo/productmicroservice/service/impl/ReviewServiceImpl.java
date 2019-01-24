@@ -38,13 +38,14 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> review = reviewRepository.findByProductId(productId);
         Iterator iterator = review.iterator();
         List<ReviewResponseDTO> responseDTOList = new ArrayList<>();
+        String customerURI;
         while (iterator.hasNext()) {
             ReviewResponseDTO reviewResponseDTO = new ReviewResponseDTO();
             reviewResponseDTO.setComment(((Review) iterator.next()).getComment());
             reviewResponseDTO.setCustomerId(((Review) iterator.next()).getReviewIdentity().getCustomerId());
             reviewResponseDTO.setProductId(((Review) iterator.next()).getReviewIdentity().getProductId());
 
-            String customerURI = Constans.CUSTOMER_MICROSERVICE_BASE_URL + "/customer/get/"+reviewResponseDTO.getCustomerId();
+            customerURI = Constans.CUSTOMER_MICROSERVICE_BASE_URL + "/customer/get/"+reviewResponseDTO.getCustomerId();
             RestTemplate restTemplate = new RestTemplate();
             CustomerDTO productResult = restTemplate.getForObject(customerURI, CustomerDTO.class);
             reviewResponseDTO.setComment(productResult.getName());
