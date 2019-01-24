@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
@@ -23,21 +22,15 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Review save(Review review) {
-        return null;
+        return reviewRepository.save(review);
     }
-
-    @Override
-    public Review findAll() {
-        return null;
-    }
-
     @Override
     public Review remove(String reviewId) {
         return null;
     }
 
     @Override
-    public List<Review> findByProductIdAndMerchantId(String productId, String merchantId) {
-        return null;
+    public List<Review> findByProductId(String productId) {
+        return reviewRepository.findByProductId(productId);
     }
 }

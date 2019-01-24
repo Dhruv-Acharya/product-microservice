@@ -5,6 +5,7 @@ import com.lelo.productmicroservice.Utilities.Constans;
 import com.lelo.productmicroservice.dto.MerchantDTO;
 import com.lelo.productmicroservice.dto.MerchantListDTO;
 import com.lelo.productmicroservice.dto.MerchantListResponseDTO;
+import com.lelo.productmicroservice.dto.ProductMerchantDTO;
 import com.lelo.productmicroservice.entity.Product;
 import com.lelo.productmicroservice.entity.ProductMerchant;
 import com.lelo.productmicroservice.entity.ProductMerchantIdentity;
@@ -45,6 +46,17 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
 
     @Override
     public ProductMerchant addProductMerchant(ProductMerchant productMerchant) {
+        Product product = productService.findOne(productMerchant.getProductMerchantIdentity().getProductId());
+        if(productMerchant.getPrice() < product.getLowestPrice() || product.getLowestPrice() == 0) {
+            product.setLowestPrice(productMerchant.getPrice());
+        }
+        if(productMerchant.getPrice() > product.getHighestPrice()) {
+            product.setHighestPrice(productMerchant.getPrice());
+        }
+        productService.save(product);
+
+
+
         return productMerchantRepository.save(productMerchant);
     }
 
@@ -158,9 +170,9 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
         int[] mQuantityOffered = new int[listSize];
         int[] quantitySold = new int[listSize];
         double[] overallValue = new double[listSize];
-        MerchantListResponseDTO merchantListResponseDTO = new MerchantListResponseDTO();
-        for (int i=0;i<merchantListDTOAlgo.size();i++) {
 
+        for (int i=0;i<merchantListDTOAlgo.size();i++) {
+            MerchantListResponseDTO merchantListResponseDTO = new MerchantListResponseDTO();
             mRate[i]=merchantListDTOAlgo.get(i).getMerchantRating();
             merchantListResponseDTO.setMerchantId(merchantListDTOAlgo.get(i).getMerchantId());
             merchantListResponseDTO.setDiscount(merchantListDTOAlgo.get(i).getDiscount());

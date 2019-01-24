@@ -4,7 +4,6 @@ public class ReviewDTO {
 
     private String customerId;
     private String productId;
-    private String merchantId;
     private String comment;
 
 
@@ -22,14 +21,6 @@ public class ReviewDTO {
 
     public void setProductId(String productId) {
         this.productId = productId;
-    }
-
-    public String getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
     }
 
     public String getComment() {
