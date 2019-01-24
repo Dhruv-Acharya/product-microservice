@@ -2,6 +2,7 @@ package com.lelo.productmicroservice.controller;
 
 
 import com.lelo.productmicroservice.dto.ReviewDTO;
+import com.lelo.productmicroservice.dto.ReviewResponseDTO;
 import com.lelo.productmicroservice.entity.Review;
 import com.lelo.productmicroservice.entity.ReviewIdentity;
 import com.lelo.productmicroservice.service.ReviewService;
@@ -33,7 +34,7 @@ public class ReviewController {
 
     @CrossOrigin("*")
     @RequestMapping(value = "/getReview/{productId}",method = RequestMethod.GET)
-    public ResponseEntity<List<Review>> findAll(@PathVariable("productId") String productId) {
+    public ResponseEntity<List<ReviewResponseDTO>> findAll(@PathVariable("productId") String productId) {
         return new ResponseEntity<>(reviewService.findByProductId(productId), HttpStatus.OK);
     }
 }
