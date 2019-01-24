@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -164,6 +163,7 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
         List<MerchantListResponseDTO> merchantListResponseDTOList = new ArrayList<>();
         int listSize = merchantListDTOAlgo.size();
         double[] mRate = new double[listSize];
+
         double[] price = new double[listSize];
         double[] productRating = new double[listSize];
         double[] discount = new double[listSize];
@@ -198,10 +198,18 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
                     int temp = rank[i];
                     rank[i]=rank[j];
                     rank[j]=temp;
-
                 }
             }
             merchantListResponseDTOList.get(i).setRating((merchantListResponseDTOList.get(i).getRating()+(listSize/rank[i]))/2);
+        }
+        for(int i = 0;i<listSize;i++){
+            for (int j = i;j<listSize;j++){
+                if(merchantListResponseDTOList.get(i).getRating()<merchantListResponseDTOList.get(j).getRating()){
+                    MerchantListResponseDTO merchantListResponseDTO1 = merchantListResponseDTOList.get(i);
+                    merchantListResponseDTOList.set(i, merchantListResponseDTOList.get(j));
+                    merchantListResponseDTOList.set(j, merchantListResponseDTO1);
+                }
+            }
         }
         return merchantListResponseDTOList;
     }

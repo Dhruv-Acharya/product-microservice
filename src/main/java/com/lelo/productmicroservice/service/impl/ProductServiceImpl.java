@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+
     @Autowired
     ProductRepository productRepository;
 
@@ -32,6 +33,8 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+
+
     @Override
     public List<Product> getByCategory(Category category) {
         List<Product> productList = new ArrayList<>();
@@ -43,6 +46,11 @@ public class ProductServiceImpl implements ProductService {
         }
         return productList;
     }
+
+//    @Override
+//    public String[] getCarousel(){
+//        return imageURLArray;
+//    }
 
     @Override
     public Product findOne(String productId) {

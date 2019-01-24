@@ -6,7 +6,9 @@ import com.lelo.productmicroservice.entity.Product;
 import java.util.List;
 
 public interface ProductService {
-    public Product save(Product product);
-    public List<Product> getByCategory(Category category);
-    public Product findOne(String productId);
+    Product save(Product product);
+    List<Product> getByCategory(Category category);
+//    String[] getCarousel();
+Product findOne(String productId);
+
 }
