@@ -23,13 +23,13 @@ import java.util.List;
 @CrossOrigin("*")
 public class ProductController {
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    ProductMerchantService productMerchantService;
+    private ProductMerchantService productMerchantService;
 
     @CrossOrigin("*")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -45,7 +45,7 @@ public class ProductController {
 
         Product createdProduct = productService.save(product);
 
-        return new ResponseEntity<String>(createdProduct.getProductId(), HttpStatus.CREATED);
+        return new ResponseEntity<>(createdProduct.getProductId(), HttpStatus.CREATED);
     }
 
     @CrossOrigin("*")
@@ -55,13 +55,13 @@ public class ProductController {
 
         List<Product> products = productService.getByCategory(category);
 
-        return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @CrossOrigin("*")
     @RequestMapping(value = "/get/{productId}", method = RequestMethod.GET)
     public ResponseEntity<Product> findByProductId(@PathVariable String productId) {
-        return new ResponseEntity<Product>(productService.findOne(productId), HttpStatus.OK);
+        return new ResponseEntity<>(productService.findOne(productId), HttpStatus.OK);
     }
 
     @CrossOrigin("*")
@@ -87,7 +87,7 @@ public class ProductController {
         ProductMerchant productMerchant = new ProductMerchant();
         BeanUtils.copyProperties(productMerchantDTO, productMerchant);
         productMerchant.setProductMerchantIdentity(productMerchantIdentity);
-        return new ResponseEntity<ProductMerchant>(productMerchantService.addProductMerchant(productMerchant), HttpStatus.CREATED);
+        return new ResponseEntity<>(productMerchantService.addProductMerchant(productMerchant), HttpStatus.CREATED);
     }
 
     @CrossOrigin("*")
@@ -97,10 +97,10 @@ public class ProductController {
         ProductMerchant productMerchant = productMerchantService.getProductMerchant(productMerchantIdentity);
         boolean result = productMerchantService.updateQuantity(productMerchant, productMerchantDTO.getQuantitySold());
         if(result) {
-            return new ResponseEntity<String>("Success", HttpStatus.OK);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<String>("Failure", HttpStatus.OK);
+            return new ResponseEntity<>("Failure", HttpStatus.OK);
         }
     }
 
@@ -118,9 +118,15 @@ public class ProductController {
         }
     }
 
+//    @CrossOrigin("*")
+//    @RequestMapping(value = "/getCarousel", method = RequestMethod.GET)
+//    public ResponseEntity<String[]> getCarousel(){
+//        return new ResponseEntity<String[]>(productService.getCarousel(), HttpStatus.OK);
+//    }
+
     @CrossOrigin("*")
     @RequestMapping(value = "/getMerchants/{productId}", method = RequestMethod.GET)
     public ResponseEntity<List<MerchantListResponseDTO>> getMerchants(@PathVariable String productId) {
-        return new ResponseEntity<List<MerchantListResponseDTO>>(productMerchantService.getMerchantFromProduct(productId), HttpStatus.OK);
+        return new ResponseEntity<>(productMerchantService.getMerchantFromProduct(productId), HttpStatus.OK);
     }
 }
