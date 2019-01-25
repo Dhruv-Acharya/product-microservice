@@ -53,14 +53,11 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
         if(productMerchant.getPrice() > product.getHighestPrice()) {
             product.setHighestPrice(productMerchant.getPrice());
         }
-
-
-
         productService.save(product);
 
         final String uri = Constants.SEARCH_MICROSERVICE_BASE_URL + "/product/update";
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.postForObject( uri, product, String.class);
+        restTemplate.put(uri, product);
 
         return productMerchantRepository.save(productMerchant);
     }
