@@ -46,7 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
             customerURI = Constants.CUSTOMER_MICROSERVICE_BASE_URL + "/customer/get/"+reviewResponseDTO.getCustomerId();
             RestTemplate restTemplate = new RestTemplate();
             CustomerDTO productResult = restTemplate.getForObject(customerURI, CustomerDTO.class);
-            reviewResponseDTO.setComment(productResult.getName());
+            reviewResponseDTO.setName(productResult.getName());
             responseDTOList.add(reviewResponseDTO);
         }
         return responseDTOList;
