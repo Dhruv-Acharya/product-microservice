@@ -1,13 +1,14 @@
 package com.lelo.productmicroservice.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lelo.productmicroservice.Utilities.Constans;
+import com.lelo.productmicroservice.Utilities.Constants;
 import com.lelo.productmicroservice.dto.MerchantDTO;
 import com.lelo.productmicroservice.dto.MerchantListDTO;
 import com.lelo.productmicroservice.dto.MerchantListResponseDTO;
 import com.lelo.productmicroservice.entity.Product;
 import com.lelo.productmicroservice.entity.ProductMerchant;
 import com.lelo.productmicroservice.entity.ProductMerchantIdentity;
+import com.lelo.productmicroservice.exception.OutOfStockException;
 import com.lelo.productmicroservice.repository.ProductMerchantRepository;
 import com.lelo.productmicroservice.repository.ProductRepository;
 import com.lelo.productmicroservice.service.ProductMerchantService;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,6 +46,19 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
 
     @Override
     public ProductMerchant addProductMerchant(ProductMerchant productMerchant) {
+        Product product = productService.findOne(productMerchant.getProductMerchantIdentity().getProductId());
+        if(productMerchant.getPrice() < product.getLowestPrice() || product.getLowestPrice() == 0) {
+            product.setLowestPrice(productMerchant.getPrice());
+        }
+        if(productMerchant.getPrice() > product.getHighestPrice()) {
+            product.setHighestPrice(productMerchant.getPrice());
+        }
+        productService.save(product);
+
+        final String uri = Constants.SEARCH_MICROSERVICE_BASE_URL + "/product/update";
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.put(uri, product);
+
         return productMerchantRepository.save(productMerchant);
     }
 
@@ -53,7 +66,7 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
     public List<MerchantListResponseDTO> getMerchantFromProduct(String productId) {
         List<String> merchantIds = productMerchantRepository.findByProductId(productId);
 //        MerchantList merchantList = new MerchantList(merchantIds);
-        final String uri = Constans.MERCHANT_MICROSERVICE_BASE_URL + "/merchant/getMerchantsByIds";
+        final String uri = Constants.MERCHANT_MICROSERVICE_BASE_URL + "/merchant/getMerchantsByIds";
         ObjectMapper mapper = new ObjectMapper();
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers=new HttpHeaders();
@@ -126,11 +139,17 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
         int newQuantity = productMerchant.getQuantityOffered() - quantitySold;
         productMerchant.setQuantitySold(productMerchant.getQuantitySold() + quantitySold);
         productMerchant.setQuantityOffered(newQuantity);
-        ProductMerchant updatedProductMerchant = productMerchantRepository.save(productMerchant);
-        if (updatedProductMerchant != null){
-            return true;
-        } else {
-            return false;
+
+        if(productMerchant.getQuantityOffered() > 0){
+            ProductMerchant updatedProductMerchant = productMerchantRepository.save(productMerchant);
+            if (updatedProductMerchant != null){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else{
+            throw new OutOfStockException();
         }
     }
 
@@ -152,15 +171,16 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
         List<MerchantListResponseDTO> merchantListResponseDTOList = new ArrayList<>();
         int listSize = merchantListDTOAlgo.size();
         double[] mRate = new double[listSize];
+
         double[] price = new double[listSize];
         double[] productRating = new double[listSize];
         double[] discount = new double[listSize];
         int[] mQuantityOffered = new int[listSize];
         int[] quantitySold = new int[listSize];
         double[] overallValue = new double[listSize];
-        MerchantListResponseDTO merchantListResponseDTO = new MerchantListResponseDTO();
-        for (int i=0;i<merchantListDTOAlgo.size();i++) {
 
+        for (int i=0;i<merchantListDTOAlgo.size();i++) {
+            MerchantListResponseDTO merchantListResponseDTO = new MerchantListResponseDTO();
             mRate[i]=merchantListDTOAlgo.get(i).getMerchantRating();
             merchantListResponseDTO.setMerchantId(merchantListDTOAlgo.get(i).getMerchantId());
             merchantListResponseDTO.setDiscount(merchantListDTOAlgo.get(i).getDiscount());
@@ -186,10 +206,18 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
                     int temp = rank[i];
                     rank[i]=rank[j];
                     rank[j]=temp;
-
                 }
             }
             merchantListResponseDTOList.get(i).setRating((merchantListResponseDTOList.get(i).getRating()+(listSize/rank[i]))/2);
+        }
+        for(int i = 0;i<listSize;i++){
+            for (int j = i;j<listSize;j++){
+                if(merchantListResponseDTOList.get(i).getRating()<merchantListResponseDTOList.get(j).getRating()){
+                    MerchantListResponseDTO merchantListResponseDTO1 = merchantListResponseDTOList.get(i);
+                    merchantListResponseDTOList.set(i, merchantListResponseDTOList.get(j));
+                    merchantListResponseDTOList.set(j, merchantListResponseDTO1);
+                }
+            }
         }
         return merchantListResponseDTOList;
     }
