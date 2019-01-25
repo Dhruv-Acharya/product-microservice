@@ -1,14 +1,14 @@
 package com.lelo.productmicroservice.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lelo.productmicroservice.Utilities.Constans;
+import com.lelo.productmicroservice.Utilities.Constants;
 import com.lelo.productmicroservice.dto.MerchantDTO;
 import com.lelo.productmicroservice.dto.MerchantListDTO;
 import com.lelo.productmicroservice.dto.MerchantListResponseDTO;
-import com.lelo.productmicroservice.dto.ProductMerchantDTO;
 import com.lelo.productmicroservice.entity.Product;
 import com.lelo.productmicroservice.entity.ProductMerchant;
 import com.lelo.productmicroservice.entity.ProductMerchantIdentity;
+import com.lelo.productmicroservice.exception.OutOfStockException;
 import com.lelo.productmicroservice.repository.ProductMerchantRepository;
 import com.lelo.productmicroservice.repository.ProductRepository;
 import com.lelo.productmicroservice.service.ProductMerchantService;
@@ -53,9 +53,14 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
         if(productMerchant.getPrice() > product.getHighestPrice()) {
             product.setHighestPrice(productMerchant.getPrice());
         }
+
+
+
         productService.save(product);
 
-
+        final String uri = Constants.SEARCH_MICROSERVICE_BASE_URL + "/product/update";
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.postForObject( uri, product, String.class);
 
         return productMerchantRepository.save(productMerchant);
     }
@@ -64,7 +69,7 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
     public List<MerchantListResponseDTO> getMerchantFromProduct(String productId) {
         List<String> merchantIds = productMerchantRepository.findByProductId(productId);
 //        MerchantList merchantList = new MerchantList(merchantIds);
-        final String uri = Constans.MERCHANT_MICROSERVICE_BASE_URL + "/merchant/getMerchantsByIds";
+        final String uri = Constants.MERCHANT_MICROSERVICE_BASE_URL + "/merchant/getMerchantsByIds";
         ObjectMapper mapper = new ObjectMapper();
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers=new HttpHeaders();
@@ -137,11 +142,17 @@ public class ProductMerchantServiceImpl implements ProductMerchantService {
         int newQuantity = productMerchant.getQuantityOffered() - quantitySold;
         productMerchant.setQuantitySold(productMerchant.getQuantitySold() + quantitySold);
         productMerchant.setQuantityOffered(newQuantity);
-        ProductMerchant updatedProductMerchant = productMerchantRepository.save(productMerchant);
-        if (updatedProductMerchant != null){
-            return true;
-        } else {
-            return false;
+
+        if(productMerchant.getQuantityOffered() > 0){
+            ProductMerchant updatedProductMerchant = productMerchantRepository.save(productMerchant);
+            if (updatedProductMerchant != null){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else{
+            throw new OutOfStockException();
         }
     }
 

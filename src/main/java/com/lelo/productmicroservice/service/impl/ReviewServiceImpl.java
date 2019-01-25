@@ -1,16 +1,13 @@
 package com.lelo.productmicroservice.service.impl;
 
-import com.lelo.productmicroservice.Utilities.Constans;
+import com.lelo.productmicroservice.Utilities.Constants;
 import com.lelo.productmicroservice.dto.CustomerDTO;
 import com.lelo.productmicroservice.dto.ReviewResponseDTO;
 import com.lelo.productmicroservice.entity.Review;
 import com.lelo.productmicroservice.repository.ReviewRepository;
 import com.lelo.productmicroservice.service.ReviewService;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -45,7 +42,7 @@ public class ReviewServiceImpl implements ReviewService {
             reviewResponseDTO.setCustomerId(((Review) iterator.next()).getReviewIdentity().getCustomerId());
             reviewResponseDTO.setProductId(((Review) iterator.next()).getReviewIdentity().getProductId());
 
-            customerURI = Constans.CUSTOMER_MICROSERVICE_BASE_URL + "/customer/get/"+reviewResponseDTO.getCustomerId();
+            customerURI = Constants.CUSTOMER_MICROSERVICE_BASE_URL + "/customer/get/"+reviewResponseDTO.getCustomerId();
             RestTemplate restTemplate = new RestTemplate();
             CustomerDTO productResult = restTemplate.getForObject(customerURI, CustomerDTO.class);
             reviewResponseDTO.setComment(productResult.getName());
