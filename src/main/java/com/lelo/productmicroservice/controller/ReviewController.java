@@ -25,8 +25,10 @@ public class ReviewController {
     @CrossOrigin("*")
     @RequestMapping(value = "/add/{customerId}/{productId}",method = RequestMethod.POST)
     public ResponseEntity<Review> addReview(@PathVariable("customerId") String customerId, @PathVariable("productId") String productId, @RequestBody ReviewDTO reviewDTO){
-        ReviewIdentity reviewIdentity=new ReviewIdentity(customerId,productId);
+        ReviewIdentity reviewIdentity=new ReviewIdentity();
         Review review=new Review();
+        reviewIdentity.setCustomerId(customerId);
+        reviewIdentity.setProductId(productId);
         review.setReviewIdentity(reviewIdentity);
         review.setComment(reviewDTO.getComment());
         return new ResponseEntity<Review>(reviewService.save(review), HttpStatus.CREATED);

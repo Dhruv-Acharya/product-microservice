@@ -12,17 +12,6 @@ public class ReviewIdentity implements Serializable {
     private String customerId;
     @NotNull
     private String productId;
-
-    ReviewIdentity(){
-
-    }
-
-    public ReviewIdentity(String customerId,String productId)
-    {
-        this.customerId=customerId;
-        this.productId=productId;
-    }
-
     public String getCustomerId() {
         return customerId;
     }

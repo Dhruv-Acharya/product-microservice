@@ -37,10 +37,11 @@ public class ReviewServiceImpl implements ReviewService {
         List<ReviewResponseDTO> responseDTOList = new ArrayList<>();
         String customerURI;
         while (iterator.hasNext()) {
+            Review reviewResponse = (Review) iterator.next();
             ReviewResponseDTO reviewResponseDTO = new ReviewResponseDTO();
-            reviewResponseDTO.setComment(((Review) iterator.next()).getComment());
-            reviewResponseDTO.setCustomerId(((Review) iterator.next()).getReviewIdentity().getCustomerId());
-            reviewResponseDTO.setProductId(((Review) iterator.next()).getReviewIdentity().getProductId());
+            reviewResponseDTO.setComment(reviewResponse.getComment());
+            reviewResponseDTO.setCustomerId(reviewResponse.getReviewIdentity().getCustomerId());
+            reviewResponseDTO.setProductId(reviewResponse.getReviewIdentity().getProductId());
 
             customerURI = Constants.CUSTOMER_MICROSERVICE_BASE_URL + "/customer/get/"+reviewResponseDTO.getCustomerId();
             RestTemplate restTemplate = new RestTemplate();
